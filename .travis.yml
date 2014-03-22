@@ -19,4 +19,4 @@ notifications:
     use_notice: true
 
 addons:
-  firefox: "esr"
+  firefox: "latest-esr"
