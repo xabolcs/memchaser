@@ -19,4 +19,4 @@ notifications:
     use_notice: true
 
 addons:
-  firefox: "latest-esr"
+  firefox: "29.0b1"
