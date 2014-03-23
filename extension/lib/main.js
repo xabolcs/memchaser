@@ -41,6 +41,51 @@ exports.main = function (options, callbacks) {
   // Create logger instance
   var logger = new Logger({ dir: dir });
 
+  const { Toolbar } = require("sdk/ui/toolbar");
+  const { Frame } = require("sdk/ui/frame");
+  const { ActionButton } = require("sdk/ui/button/action");
+
+  let button = new ActionButton({
+    id: "button",
+    label: "Set Resident to 1337!",
+    icon: "chrome://mozapps/skin/extensions/extensionGeneric.png",
+    onClick: () => {
+      widget.postMessage({
+        type: "update_memory",
+        data: { "resident": 1337 * 1048576 }
+      });
+    }
+  });
+
+  /*let frame = new Frame({
+      url: "./widget/widget.html",
+      onAttach: () => {
+        console.log("frame was attached");
+      },
+      onReady: () => {
+        console.log("frame document was loaded");
+      },
+      onLoad: () => {
+        console.log("frame load complete");
+      },
+      onMessage: (event) => {
+        console.log("got message from frame content", event);
+        if (event.data === "ping!")
+          event.source.postMessage("pong!", event.source.origin);
+      }
+  });*/
+
+  let toolbar = new Toolbar({
+    title: "MemChaser Toolbar",
+    hidden: false,
+    onShow: () => {
+      console.log("toolbar was shown");
+    },
+    onHide: () => {
+      console.log("toolbar was hidden");
+    }
+  });
+
   var contextPanel = panel.Panel({
     width: 128,
     height: 107,
