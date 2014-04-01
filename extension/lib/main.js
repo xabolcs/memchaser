@@ -10,7 +10,7 @@ const panel = require("sdk/panel");
 const prefs = require("sdk/preferences/service");
 const self = require("sdk/self");
 const simple_prefs = require("sdk/simple-prefs");
-const widgets = require("sdk/widget");
+//const widgets = require("sdk/widget");
 
 const config = require("./config");
 const garbage_collector = require("./garbage-collector");
@@ -57,7 +57,7 @@ exports.main = function (options, callbacks) {
     }
   });
 
-  /*let frame = new Frame({
+  let frame = new Frame({
       url: "./widget/widget.html",
       onAttach: () => {
         console.log("frame was attached");
@@ -73,16 +73,17 @@ exports.main = function (options, callbacks) {
         if (event.data === "ping!")
           event.source.postMessage("pong!", event.source.origin);
       }
-  });*/
+  });
 
   let toolbar = new Toolbar({
     title: "MemChaser Toolbar",
+    items: [frame],
     hidden: false,
     onShow: () => {
-      console.log("toolbar was shown");
+      //console.log("toolbar was shown");
     },
     onHide: () => {
-      console.log("toolbar was hidden");
+      //console.log("toolbar was hidden");
     }
   });
 
@@ -128,7 +129,7 @@ exports.main = function (options, callbacks) {
     }
   });
 
-  var widget = widgets.Widget({
+  var widget = frame;/*widgets.Widget({
     id: "memchaser-widget",
     label: "MemChaser",
     tooltip: "MemChaser",
@@ -140,7 +141,7 @@ exports.main = function (options, callbacks) {
     onClick: function () {
       contextPanel.postMessage({ type: "update", data: { logger_active: logger.active }});
     }
-  });
+  });*/
 
 
   widget.on("message", function (aMessage) {

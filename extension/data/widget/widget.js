@@ -3,20 +3,38 @@ const BYTE_TO_MEGABYTE = 1/1048576;
 const GARBAGE_COLLECTOR_DURATION_WARNING = 100;
 
 
-(function setup() {
-  let elements = [].slice.call(document.querySelectorAll("[data-tooltip]"));
+(function init() {
+  function setup() {
+    let elements = [].slice.call(document.querySelectorAll("[data-tooltip]"));
 
-  elements.forEach(function (element) {
-    element.onmouseover = function () {
-      self.postMessage({ type: "update_tooltip", data: this.dataset.tooltip });
-    };
-  });
+    elements.forEach(function (element) {
+      element.onmouseover = function () {
+        self.postMessage({ type: "update_tooltip", data: this.dataset.tooltip });
+      };
+    });
 
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=660857
-  // TODO: Remove this when bug 660857 is fixed; otherwise
-  // we have to resort to the following workaround:
-  document.getElementById("splash").style.display = "none";
-  document.getElementById("init").style.display = "inline";
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=660857
+    // TODO: Remove this when bug 660857 is fixed; otherwise
+    // we have to resort to the following workaround:
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("init").style.display = "inline";
+  };
+
+  // Wait for the window to finish loading before running the callback.
+  function runOnLoad(window) {
+    // Listen for one load event before checking the window type
+    window.addEventListener("load", function runOnce() {
+      window.removeEventListener("load", runOnce, false);
+      setup();
+    }, false);
+  }
+
+  if (window.document.readyState == "complete") {
+    setup();
+  } else {
+    // Wait for the window to load before continuing
+    runOnLoad(window);
+  }
 })();
 
 
